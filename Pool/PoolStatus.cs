@@ -1,4 +1,4 @@
-﻿namespace Zadatak1;
+﻿namespace Zadatak1.Pool;
 
 public enum PoolStatus
 {

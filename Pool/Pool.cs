@@ -1,4 +1,4 @@
-﻿namespace Zadatak1;
+﻿namespace Zadatak1.Pool;
 
 public delegate void PoolLevelHandler(double level);
 
@@ -22,7 +22,7 @@ public class Pool
                 value = MaxLevel;
 
             if (Math.Abs(_level - value) < LevelDiffTolerance) return;
-            
+
             _level = value;
             PoolLevelChanged?.Invoke(_level);
             ChangePoolStatus();
@@ -44,7 +44,7 @@ public class Pool
     public double MinLevel { get; set; } = 0.0;
     public double MaxLevel { get; set; } = 5.0;
 
-    public event PoolLevelHandler? PoolLevelChanged; 
+    public event PoolLevelHandler? PoolLevelChanged;
     public event PoolStatusHandler? PoolStatusChanged;
 
     private void ChangePoolStatus()

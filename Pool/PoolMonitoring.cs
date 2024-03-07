@@ -1,4 +1,4 @@
-﻿namespace Zadatak1;
+﻿namespace Zadatak1.Pool;
 
 public class PoolMonitoring
 {
@@ -27,7 +27,7 @@ public class PoolMonitoring
                 PoolStatus.Full => inRate,
                 _ => currentRate
             };
-            
+
             Thread.Sleep(1000);
         }
     }
