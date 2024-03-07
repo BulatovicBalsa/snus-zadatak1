@@ -1,64 +1,40 @@
 ﻿namespace Zadatak1;
 
-internal delegate void PoolLevelHandler(double level);
-
-internal delegate void PoolStatusHandler(PoolStatus status);
-
-internal class PoolMonitoring
+public class PoolMonitoring
 {
     public PoolMonitoring()
     {
         Pool = new Pool();
-        PoolLevelChanged += OnPoolLevelChanged;
-        PoolStatusChanged += OnPoolStatusChanged;
-        PoolLevelChanged += OnPoolLevelChangedLogger;
+        Pool.PoolLevelChanged += OnPoolLevelChanged;
+        Pool.PoolStatusChanged += OnPoolStatusChanged;
+        Pool.PoolLevelChanged += OnPoolLevelChangedLogger;
     }
 
     public Pool Pool { get; set; }
 
-    public event PoolLevelHandler PoolLevelChanged;
-    public event PoolStatusHandler PoolStatusChanged;
 
     public void LevelChangeSimulation(double inRate, double outRate)
     {
         inRate = -Math.Abs(inRate);
         outRate = Math.Abs(outRate);
         var currentRate = outRate;
-        const double tolerance = 0.001;
         while (true)
         {
             Pool.Level += currentRate;
-            if (Pool.Level <= Pool.MinLevel)
+            currentRate = Pool.Status switch
             {
-                Pool.Level = Pool.MinLevel;
-                currentRate = outRate;
-            }
-            else if (Pool.Level >= Pool.MaxLevel)
-            {
-                Pool.Level = Pool.MaxLevel;
-                currentRate = inRate;
-            }
-
-            PoolLevelChanged?.Invoke(Pool.Level);
-
-            if (Math.Abs(Pool.Level - Pool.MinLevel) < tolerance)
-            {
-                Pool.Status = PoolStatus.Empty;
-                PoolStatusChanged?.Invoke(Pool.Status);
-            }
-            else if (Math.Abs(Pool.Level - Pool.MaxLevel) < tolerance && Pool.Status != PoolStatus.Full)
-            {
-                Pool.Status = PoolStatus.Full;
-                PoolStatusChanged?.Invoke(Pool.Status);
-            }
-
+                PoolStatus.Empty => outRate,
+                PoolStatus.Full => inRate,
+                _ => currentRate
+            };
+            
             Thread.Sleep(1000);
         }
     }
 
     private static void OnPoolLevelChanged(double level)
     {
-        Console.WriteLine($"Pool level changed to {level}, at {DateTime.Now}");
+        Console.WriteLine($"Pool level changed to {Math.Round(level, 2)}, at {DateTime.Now}");
     }
 
     private static void OnPoolStatusChanged(PoolStatus status)
@@ -69,6 +45,6 @@ internal class PoolMonitoring
     private static void OnPoolLevelChangedLogger(double level)
     {
         using var sw = File.AppendText("pool.log");
-        sw.WriteLine($"Nivo vode: {level}, zabelezeno: {DateTime.Now}");
+        sw.WriteLine($"Nivo vode: {Math.Round(level, 2)}, zabelezeno: {DateTime.Now}");
     }
 }

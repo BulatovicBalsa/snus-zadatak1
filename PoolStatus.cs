@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Zadatak1;
 
-namespace Zadatak1
+public enum PoolStatus
 {
-    internal enum PoolStatus
-    {
-        Empty,
-        Half,
-        Full
-    }
+    Empty,
+    Half,
+    Full
 }
