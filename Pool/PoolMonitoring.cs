@@ -44,7 +44,7 @@ public class PoolMonitoring
 
     private static void OnPoolLevelChangedLogger(double level)
     {
-        using var sw = File.AppendText("pool.log");
-        sw.WriteLine($"Nivo vode: {Math.Round(level, 2)}, zabelezeno: {DateTime.Now}");
+        using var sw = File.AppendText("bazenLog.txt");
+        sw.WriteLine($"Nivo vode: {Math.Round(level, 2)} metara, zabelezeno: {DateTime.Now}");
     }
 }
