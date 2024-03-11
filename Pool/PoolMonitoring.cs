@@ -21,22 +21,23 @@ public class PoolMonitoring
     public Pool Pool { get; set; }
 
 
-    public void LevelChangeSimulation(double inRate, double outRate)
+    public void LevelChangeSimulation(double outRate, double inRate)
     {
-        inRate = -Math.Abs(inRate);
-        outRate = Math.Abs(outRate);
+        outRate = -Math.Abs(outRate);
+        inRate = Math.Abs(inRate);
         var currentRate = outRate;
         while (true)
         {
             Pool.Level += currentRate;
             currentRate = Pool.Status switch
             {
-                PoolStatus.Empty => outRate,
-                PoolStatus.Full => inRate,
+                PoolStatus.Empty => inRate,
+                PoolStatus.Full => outRate,
                 _ => currentRate
             };
 
-            Thread.Sleep(1000);
+            var sleepTime = currentRate < 0 ? 1000 : 1500;
+            Thread.Sleep(sleepTime);
         }
     }
 
