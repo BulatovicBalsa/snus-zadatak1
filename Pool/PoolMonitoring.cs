@@ -10,6 +10,14 @@ public class PoolMonitoring
         Pool.PoolLevelChanged += OnPoolLevelChangedLogger;
     }
 
+    public PoolMonitoring(Pool pool)
+    {
+        Pool = pool;
+        Pool.PoolLevelChanged += OnPoolLevelChanged;
+        Pool.PoolStatusChanged += OnPoolStatusChanged;
+        Pool.PoolLevelChanged += OnPoolLevelChangedLogger;
+    }
+
     public Pool Pool { get; set; }
 
 
